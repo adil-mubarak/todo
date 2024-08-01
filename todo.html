@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Todo List</title>
+    <style>
+        body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.add-form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.add-form input[type="text"] {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    flex: 1;
+    margin-right: 10px;
+}
+
+.add-form button {
+    padding: 10px;
+    font-size: 14px;
+    border: none;
+    background: #28a745;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.add-form button:hover {
+    background: #218838;
+}
+
+.todo-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.todo-item {
+    background: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #ddd;
+}
+
+.todo-item.completed span {
+    text-decoration: line-through;
+    color: #aaa;
+}
+
+.update-form,
+.delete-form {
+    margin: 0;
+}
+
+.update-form button,
+.delete-form button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 10px;
+    transition: color 0.3s;
+}
+
+.update-form button:hover,
+.delete-form button:hover {
+    color: #dc3545;
+}
+
+.update-form button {
+    color: #28a745;
+}
+
+.update-form button:hover {
+    color: #218838;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Todo List</h1>
+        <form action="/todo" method="POST" class="add-form">
+            <input type="text" name="title" placeholder="Add a new todo" required>
+            <button type="submit">Add</button>
+        </form>
+        <ul class="todo-list">
+            {{range .}}
+            <li class="todo-item {{if .Status}}completed{{end}}">
+                <form action="/todo/{{.ID}}/update" method="POST" class="update-form">
+                    <button type="submit">{{if .Status}}✓{{else}}✗{{end}}</button>
+                </form>
+                <span>{{.Title}}</span>
+                <form action="/todo/{{.ID}}/delete" method="POST" class="delete-form">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+            {{end}}
+        </ul>
+    </div>
+</body>
+</html>
